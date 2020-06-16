@@ -22,18 +22,21 @@ Start-to-start and end-to-end distances between each template and the unknown ge
 **s = L/max(W,H)**
 
 ### Shape Channel
-Relative coordinate, normalized
+
+Shape score for every valid word after pruning is obtained. In this function, we compare the sampled input gesture (containing 100 points) with every single valid template (containing 100 points) and give each of them a shape score. This takes into account the relative coordinates of the gestures, thus the score is calculated after normalization.
 <img src = "shape_channel.png" width = "250">
 
 ### Location Channel
-Absolute coordinate, unnormalized
+
+Location score for every valid word after pruning is obtained.  we compare the sampled input gesture (containing 100 points) with every single valid template (containing 100 points) and give each of them a location score. This takes into account the absolute coordinates of the gestures, thus normalization is not performed before calculating the score.
 <img src = "location_channel.png" width = "250">
    
 #### Integration score = a * shape score + b * location score where a and b are parameters and a + b = 1
    
 ### Get Best Word
 
-Select top-N, say, top-3 words with highest integration scores. Multiply with their corresponding probabilities.
+Top-n words with the highest integration scores are selected and their corresponding probabilities are used as weight. The word with the highest weighted integration score is exactly the word we want.
+
 _For example, integration_score(“too”) == integration_score(“to”), since prob(“too”) < prob(“to”), integration_score(“too”) * prob(“too”) < integration_score(“to”) * prob(“to”). Hence we choose word “to” and algorithm terminated._
  
 
