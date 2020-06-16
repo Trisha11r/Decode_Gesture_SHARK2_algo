@@ -11,29 +11,29 @@ Given a dictionary containing 10000 words, implementation of SHARK2 algorithm (a
     4.Location Channel
     5.Integration
 
-### Sampling
+### Sampling (generate_sample_points)
 
 SHARK2 actually compares the user input pattern with standard templates for each word. When we compare different patterns, it is important to make them comparable. No matter how long or how short the gesture is, we uniformly sample 100 points along the pattern.
  
-### Pruning
+### Pruning (do_pruning)
 
 Start-to-start and end-to-end distances between each template and the unknown gesture is calculated. The two patterns should be normalized in scale and translation. Normalization is achieved by scaling the largest side of the bounding box to a parameter L.
 
 **s = L/max(W,H)**
 
-### Shape Channel
+### Shape Channel (get_shape_scores)
 
 Shape score for every valid word after pruning is obtained. In this function, we compare the sampled input gesture (containing 100 points) with every single valid template (containing 100 points) and give each of them a shape score. This takes into account the relative coordinates of the gestures, thus the score is calculated after normalization.
 <img src = "shape_channel.png" width = "250">
 
-### Location Channel
+### Location Channel (get_location_scores)
 
 Location score for every valid word after pruning is obtained.  we compare the sampled input gesture (containing 100 points) with every single valid template (containing 100 points) and give each of them a location score. This takes into account the absolute coordinates of the gestures, thus normalization is not performed before calculating the score.
 <img src = "location_channel.png" width = "250">
    
 #### Integration score = a * shape score + b * location score where a and b are parameters and a + b = 1
    
-### Get Best Word
+### Get Best Word (get_best_word)
 
 Top-n words with the highest integration scores are selected and their corresponding probabilities are used as weight. The word with the highest weighted integration score is exactly the word we want.
 
